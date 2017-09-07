@@ -7,10 +7,14 @@ module SpreeShipstation
   class Configuration
     attr_accessor :api_key
     attr_accessor :api_secret
+    attr_accessor :store_id
+    attr_accessor :warehouse_id
 
     def initialize
       @api_key = ''
       @api_secret = ''
+      @store_id = ''
+      @warehouse_id = ''
     end
   end
 
