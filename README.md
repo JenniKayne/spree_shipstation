@@ -2,7 +2,9 @@ SpreeShipstation
 ================
 
 Spree - Shipstation integrator.
+
 Communication with Shipstation done by https://github.com/Jellyfishboy/shipstation
+Much hard work included here has been done in https://github.com/DynamoMTL/spree_shipstation
 
 ## Installation
 

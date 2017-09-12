@@ -1,6 +1,6 @@
 module Spree
   class Variant < Spree::Base
-    module Shipstation
+    module ShipstationParams
       def shipstation_options
         option_values.map do |ov|
           {

@@ -1,6 +1,6 @@
 module Spree
   class Address < Spree::Base
-    module Shipstation
+    module ShipstationParams
       def shipstation_params_name
         [firstname, lastname].reject(&:blank?).join(' ')
       end
