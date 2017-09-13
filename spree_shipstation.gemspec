@@ -8,13 +8,12 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_shipstation'
   s.version     = SpreeShipstation.version
-  s.summary     = 'Add extension summary here'
-  s.description = 'Add (optional) extension description here'
+  s.summary     = 'Spree - Shipstation integrator'
   s.required_ruby_version = '>= 2.2.7'
 
-  s.author    = 'You'
-  s.email     = 'you@example.com'
-  s.homepage  = 'https://github.com/your-github-handle/spree_shipstation'
+  s.author    = 'Paweł Strzałkowski'
+  s.email     = 'pawel@praesens.co'
+  s.homepage  = 'https://github.com/praesens/spree_shipstation'
   s.license = 'BSD-3-Clause'
 
   # s.files       = `git ls-files`.split("\n").reject { |f| f.match(/^spec/) }
@@ -24,6 +23,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'spree_core', '>= 3.1.0', '< 4.0'
   s.add_dependency 'spree_extension'
   s.add_dependency 'shipstation'
+  s.add_dependency 'exception_notification'
+  s.add_dependency 'slack-notifier'
 
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'capybara-screenshot'

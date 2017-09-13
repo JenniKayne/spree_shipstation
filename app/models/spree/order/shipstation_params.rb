@@ -79,18 +79,18 @@ module Spree
 
       def shipstation_params_advanced_options
         {
-          # warehouseId: SpreeShipstation.configuration.warehouse_id,
+          warehouseId: SpreeShipstation.configuration.warehouse_id,
+          storeId: SpreeShipstation.configuration.store_id,
+          containsAlcohol: false,
+          source: "Webstore",
           # nonMachinable: false,
           # saturdayDelivery: false,
-          # containsAlcohol: false,
           # mergedOrSplit: false,
           # mergedIds: [],
           # parentId: nil,
-          # storeId: SpreeShipstation.configuration.store_id,
           # customField1: "Custom data that you can add to an order. See Custom Field #2 & #3 for more info!",
           # customField2: "Per UI settings, this information can appear on some carrier's shipping labels. See link",
           # customField3: "https://help.shipstation.com/hc/en-us/articles/206639957",
-          # source: "Webstore",
           # billToParty: nil,
           # billToAccount: nil,
           # billToPostalCode: nil,

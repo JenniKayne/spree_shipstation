@@ -13,6 +13,7 @@ class Spree::ShipstationManager
     if @verbose
       puts "Spree::ShipstationManager export order #{order.number}"
     end
+    # raise 'manual exception'
     response = Shipstation::Order.create order.shipstation_params
     order.shipstation_exported!
     if @verbose
@@ -30,8 +31,9 @@ class Spree::ShipstationManager
     collect_export_orders.each do |order|
       begin
         export_order order
-      rescue => error
-        MassNotifier::Notification.new('Error::Shipstation.export_orders', error.message)
+      rescue => e
+        message = prepare_error_message("Error::Shipstation.export_orders", order)
+        ExceptionNotifier.notify_exception(e, data: { msg: message })
         next
       end
     end
