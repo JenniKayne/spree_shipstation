@@ -2,7 +2,7 @@ namespace :spree do
   namespace :shipstation do
     desc 'Export New Orders'
     task export_orders: :environment do
-      Spree::ShipstationManager.new(:export_orders, true)
+      SpreeShipstation::ExportOrdersJob.perform_later
     end
   end
 end
