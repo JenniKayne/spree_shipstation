@@ -11,7 +11,7 @@ module SpreeShipstation
     MAJOR = 3
     MINOR = 3
     TINY  = 0
-    PRE   = ''.freeze
+    PRE   = nil
 
     STRING = [MAJOR, MINOR, TINY, PRE].compact.join('.')
   end
