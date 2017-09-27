@@ -15,7 +15,10 @@ module SpreeShipstation
       Dir.glob(File.join(File.dirname(__FILE__), '../../app/**/*_decorator*.rb')) do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
+      decorate
+    end
 
+    def self.decorate
       Spree::Address.class_eval do
         include Spree::Address::ShipstationParams
       end

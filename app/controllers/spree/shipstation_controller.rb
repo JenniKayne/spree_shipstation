@@ -8,13 +8,14 @@ module Spree
     protect_from_forgery except: :shipnotify
 
     def shipnotify
-      notice = Spree::ShipmentNotice.new(params, request.body.read)
+      url = request.body.read
+      Spree::ShipmentNotice.new(url)
 
-      if notice.apply
-        render plain: 'success'
-      else
-        render plain: notice.error, status: :bad_request
-      end
+      render plain: 'OK'
+    rescue => error
+      message = "Error::ShipstationController.shipnotify #{error.message}"
+      ExceptionNotifier.notify_exception(error, data: { msg: message })
+      render plain: error.message, status: :bad_request
     end
   end
 end
