@@ -14,10 +14,6 @@ module Spree
 
       def shipstation_params_base
         # shipByDate: "2015-07-05T00:00:00.0000000",
-        # customerNotes: "Thanks for ordering!",
-        # internalNotes: "Customer called and would like to upgrade shipping",
-        # gift: true,
-        # giftMessage: "Thank you!",
         # packageCode: "package",
         # confirmation: "delivery",
         # shipDate: "2015-07-02",
@@ -27,10 +23,12 @@ module Spree
           orderDate: completed_at,
           orderStatus: "awaiting_shipment"
         }.
-          merge!(shipstation_params_totals).
-          merge!(shipstation_params_payment).
           merge!(shipstation_params_customer).
+          merge!(shipstation_params_gift).
+          merge!(shipstation_params_notes).
+          merge!(shipstation_params_payment).
           merge!(shipstation_params_shipment).
+          merge!(shipstation_params_totals).
           merge!(shipstation_params_weight)
       end
 
@@ -42,8 +40,22 @@ module Spree
         }
       end
 
+      def shipstation_params_gift
+        {
+          gift: false,
+          giftMessage: nil,
+        }
+      end
+
       def shipstation_params_items
         line_items.map &:shipstation_params
+      end
+
+      def shipstation_params_notes
+        {
+          customerNotes: nil,
+          internalNotes: nil,
+        }
       end
 
       def shipstation_params_payment
@@ -83,19 +95,37 @@ module Spree
           storeId: SpreeShipstation.configuration.store_id,
           containsAlcohol: false,
           source: "Webstore",
-          # nonMachinable: false,
-          # saturdayDelivery: false,
-          # mergedOrSplit: false,
-          # mergedIds: [],
-          # parentId: nil,
-          # customField1: "Custom data that you can add to an order. See Custom Field #2 & #3 for more info!",
-          # customField2: "Per UI settings, this information can appear on some carrier's shipping labels. See link",
-          # customField3: "https://help.shipstation.com/hc/en-us/articles/206639957",
-          # billToParty: nil,
-          # billToAccount: nil,
-          # billToPostalCode: nil,
-          # billToCountryCode: nil
+          customField1: shipstation_params_advanced_custom_field_1,
+          customField2: shipstation_params_advanced_custom_field_2,
+          customField3: shipstation_params_advanced_custom_field_3,
+          nonMachinable: false,
+          mergedOrSplit: false,
+          mergedIds: [],
+          parentId: nil,
+          saturdayDelivery: false
+        }.
+          merge!(shipstation_params_advanced_bill_to)
+      end
+
+      def shipstation_params_advanced_bill_to
+        {
+          billToParty: nil,
+          billToAccount: nil,
+          billToPostalCode: nil,
+          billToCountryCode: nil
         }
+      end
+
+      def shipstation_params_advanced_custom_field_1
+        nil
+      end
+
+      def shipstation_params_advanced_custom_field_2
+        nil
+      end
+
+      def shipstation_params_advanced_custom_field_3
+        nil
       end
     end
   end

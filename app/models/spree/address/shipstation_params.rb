@@ -12,12 +12,16 @@ module Spree
           street1: address1,
           street2: address2,
           city: city,
-          state: state_name,
+          state: shipstation_state_name(state),
           postalCode: zipcode,
-          country: country.present? ? country.iso : '',
+          country: (country.present? ? country.iso : ''),
           phone: phone,
           residential: true
         }
+      end
+
+      def shipstation_state_name(state)
+        state.present? ? state.name : ''
       end
     end
   end

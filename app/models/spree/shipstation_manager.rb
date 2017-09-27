@@ -15,13 +15,17 @@ class Spree::ShipstationManager
     end
     # raise 'manual exception'
     response = Shipstation::Order.create order.shipstation_params
+    export_order_validate_response(order, response)
     order.shipstation_exported!
     if @verbose
       puts "> Exported"
     end
+    response
+  end
+
+  def export_order_validate_response(order, response)
     raise prepare_error_message(response, order) if response.class != Hash
     raise prepare_error_message(response['Message'], order) if response['Message'].present?
-    response
   end
 
   def export_orders
@@ -32,7 +36,7 @@ class Spree::ShipstationManager
       begin
         export_order order
       rescue => e
-        message = prepare_error_message("Error::Shipstation.export_orders", order)
+        message = prepare_error_message("Error::Shipstation.export_orders #{e.message}", order)
         ExceptionNotifier.notify_exception(e, data: { msg: message })
         next
       end
