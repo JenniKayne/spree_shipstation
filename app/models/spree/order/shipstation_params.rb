@@ -19,7 +19,7 @@ module Spree
         # shipDate: "2015-07-02",
         {
           orderNumber: number,
-          orderKey: id,
+          orderKey: number,
           orderDate: completed_at,
           orderStatus: "awaiting_shipment"
         }.
