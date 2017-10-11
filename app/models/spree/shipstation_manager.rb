@@ -13,7 +13,7 @@ class Spree::ShipstationManager
     if @verbose
       puts "Spree::ShipstationManager export order #{order.number}"
     end
-    # raise 'manual exception'
+
     response = Shipstation::Order.create order.shipstation_params
     export_order_validate_response(order, response)
     order.shipstation_exported!
@@ -21,6 +21,9 @@ class Spree::ShipstationManager
       puts "> Exported"
     end
     response
+  rescue StandardError => e
+    message = prepare_error_message("Error::Shipstation.export_order #{e.message}", order)
+    ExceptionNotifier.notify_exception(e, data: { msg: message })
   end
 
   def export_order_validate_response(order, response)
@@ -51,6 +54,6 @@ class Spree::ShipstationManager
     if @verbose
       puts "Spree::ShipstationManager collect_export_orders"
     end
-    Spree::Order.complete.where(shipstation_exported_at: nil).limit(1)
+    Spree::Order.complete.where(shipstation_exported_at: nil)
   end
 end
