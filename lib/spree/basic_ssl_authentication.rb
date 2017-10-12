@@ -3,7 +3,6 @@ module Spree
     extend ActiveSupport::Concern
 
     included do
-      # ssl_required
       before_action :authenticate
     end
 
