@@ -8,8 +8,11 @@ module Spree
     protect_from_forgery except: :shipnotify
 
     def shipnotify
-      url = request.body.read
-      Spree::ShipmentNotice.new(url)
+      json = request.body.read
+      data = JSON.parse(json)
+      if data['resource_type'] == 'ITEM_SHIP_NOTIFY'
+        Spree::ShipmentNotice.new(data['resource_url'])
+      end
 
       render plain: 'OK'
     rescue => error
