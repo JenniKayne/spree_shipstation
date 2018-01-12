@@ -1,19 +1,20 @@
 class Spree::ShipstationManager
-  ALLOWED_ACTIONS = %i[export_orders].freeze
+  ALLOWED_ACTIONS = %i[export_orders export_order].freeze
 
-  def initialize(action, verbose = false)
+  def initialize(action, params = {}, verbose = false)
     return unless ALLOWED_ACTIONS.include?(action)
     @verbose = verbose
-    send(action)
+    send(action, params)
   end
 
   private
 
-  def export_order(order)
+  def export_order(params = {})
     if @verbose
       puts "Spree::ShipstationManager export order #{order.number}"
     end
 
+    order = params[:order]
     response = Shipstation::Order.create order.shipstation_params
     export_order_validate_response(order, response)
     order.shipstation_exported!
@@ -31,13 +32,13 @@ class Spree::ShipstationManager
     raise prepare_error_message(response['Message'], order) if response['Message'].present?
   end
 
-  def export_orders
+  def export_orders(_params = {})
     if @verbose
       puts "Spree::ShipstationManager export_orders #{collect_export_orders.size}"
     end
     collect_export_orders.each do |order|
       begin
-        export_order order
+        export_order(order: order)
       rescue => e
         message = prepare_error_message("Error::Shipstation.export_orders #{e.message}", order)
         ExceptionNotifier.notify_exception(e, data: { msg: message })
