@@ -1,26 +1,23 @@
 class Spree::ShipstationManager
   ALLOWED_ACTIONS = %i[export_orders export_order].freeze
 
-  def initialize(action, params = {}, verbose = false)
+  def initialize(action, params = {})
     return unless ALLOWED_ACTIONS.include?(action)
-    @verbose = verbose
+    @verbose = params[:verbose] == true
     send(action, params)
   end
 
   private
 
   def export_order(params = {})
-    if @verbose
-      puts "Spree::ShipstationManager export order #{order.number}"
-    end
+    puts "Spree::ShipstationManager export order #{order.number}" if @verbose
 
     order = params[:order]
     response = Shipstation::Order.create order.shipstation_params
     export_order_validate_response(order, response)
     order.shipstation_exported!
-    if @verbose
-      puts "> Exported"
-    end
+
+    puts '> Exported' if @verbose
     response
   rescue StandardError => e
     message = prepare_error_message("Error::Shipstation.export_order #{e.message}", order)
@@ -39,7 +36,7 @@ class Spree::ShipstationManager
     collect_export_orders.each do |order|
       begin
         export_order(order: order)
-      rescue => e
+      rescue StandardError => e
         message = prepare_error_message("Error::Shipstation.export_orders #{e.message}", order)
         ExceptionNotifier.notify_exception(e, data: { msg: message })
         next
@@ -52,9 +49,7 @@ class Spree::ShipstationManager
   end
 
   def collect_export_orders
-    if @verbose
-      puts "Spree::ShipstationManager collect_export_orders"
-    end
+    puts 'Spree::ShipstationManager collect_export_orders' if @verbose
     Spree::Order.complete.where(shipstation_exported_at: nil)
   end
 end

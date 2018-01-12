@@ -21,7 +21,7 @@ module Spree
           orderNumber: number,
           orderKey: number,
           orderDate: completed_at,
-          orderStatus: "awaiting_shipment"
+          orderStatus: 'awaiting_shipment'
         }.
           merge!(shipstation_params_customer).
           merge!(shipstation_params_gift).
@@ -48,7 +48,7 @@ module Spree
       end
 
       def shipstation_params_items
-        line_items.map &:shipstation_params
+        line_items.map(&:shipstation_params)
       end
 
       def shipstation_params_notes
@@ -94,7 +94,7 @@ module Spree
           warehouseId: SpreeShipstation.configuration.warehouse_id,
           storeId: SpreeShipstation.configuration.store_id,
           containsAlcohol: false,
-          source: "Webstore",
+          source: 'Webstore',
           customField1: shipstation_params_advanced_custom_field_1,
           customField2: shipstation_params_advanced_custom_field_2,
           customField3: shipstation_params_advanced_custom_field_3,

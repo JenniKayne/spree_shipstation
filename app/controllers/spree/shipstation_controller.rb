@@ -15,7 +15,7 @@ module Spree
       end
 
       render plain: 'OK'
-    rescue => error
+    rescue StandardError => error
       message = "Error::ShipstationController.shipnotify #{error.message}"
       ExceptionNotifier.notify_exception(error, data: { msg: message })
       render plain: error.message, status: :bad_request
