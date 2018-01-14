@@ -11,7 +11,7 @@ module Spree
       }
       response = HTTParty.get(details_url, basic_auth: auth)
       apply_response(response)
-    rescue => error
+    rescue StandardError => error
       handle_error(error, :initialize, details_url)
     end
 
@@ -22,7 +22,7 @@ module Spree
       json['shipments'].each do |shipment|
         apply(shipment['orderNumber'], shipment['trackingNumber'])
       end
-    rescue => error
+    rescue StandardError => error
       handle_error(error, :apply_response, response)
     end
 
@@ -31,7 +31,7 @@ module Spree
       raise("Order not found #{order_id}") if order.blank?
 
       update(order, tracking_number)
-    rescue => error
+    rescue StandardError => error
       handle_error(error, :apply, order: order.number, tracking: tracking_number)
     end
 
@@ -46,7 +46,7 @@ module Spree
             # shipment.inventory_units.each &:ship!
             # shipment.touch :shipped_at
           end
-        rescue => error
+        rescue StandardError => error
           handle_error(error, :update, order: order.number, tracking: tracking_number, shipment: shipment.number)
           next
         end

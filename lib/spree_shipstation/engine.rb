@@ -30,6 +30,14 @@ module SpreeShipstation
       Spree::Order.class_eval do
         include Spree::Order::ShipstationParams
         include Spree::Order::ShipstationExport
+
+        state_machine do
+          after_transition to: :complete, do: :schedule_shipstation_export
+        end
+
+        def schedule_shipstation_export
+          SpreeShipstation::ExportOrderJob.perform_later(self)
+        end
       end
 
       Spree::Shipment.class_eval do
@@ -41,6 +49,6 @@ module SpreeShipstation
       end
     end
 
-    config.to_prepare &method(:activate).to_proc
+    config.to_prepare(&method(:activate).to_proc)
   end
 end
