@@ -2,6 +2,7 @@ require 'spree_core'
 require 'spree_shipstation/engine'
 require 'spree_shipstation/version'
 require 'shipstation'
+require 'spree/shipment_notice'
 
 module SpreeShipstation
   class Configuration
