@@ -4,7 +4,7 @@ module SpreeShipstation
     isolate_namespace Spree
     engine_name 'spree_shipstation'
 
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.eager_load_paths += %W(#{config.root}/lib)
 
     # use rspec for tests
     config.generators do |g|
