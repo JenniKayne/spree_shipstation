@@ -3,7 +3,6 @@ module Spree
     module ShipstationExport
       def shipstation_valid?
         !product.is_e_gift_card
-        true
       end
     end
   end
