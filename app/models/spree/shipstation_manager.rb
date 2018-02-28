@@ -10,15 +10,18 @@ class Spree::ShipstationManager
   private
 
   def export_order(params = {})
+    order = params[:order]
     puts "Spree::ShipstationManager export order #{order.number}" if @verbose
 
-    order = params[:order]
-    response = Shipstation::Order.create order.shipstation_params
-    export_order_validate_response(order, response)
-    order.shipstation_exported!
-
-    puts '> Exported' if @verbose
-    response
+    if order.shipstation_valid?
+      response = Shipstation::Order.create order.shipstation_params
+      export_order_validate_response(order, response)
+      order.shipstation_exported!
+      puts '> Exported' if @verbose
+      response
+    elsif @verbose
+      puts '> Order not suitable for shipstation'
+    end
   rescue StandardError => e
     message = prepare_error_message("Error::Shipstation.export_order #{e.message}", order)
     ExceptionNotifier.notify_exception(e, data: { msg: message })

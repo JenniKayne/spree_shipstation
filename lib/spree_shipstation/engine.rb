@@ -25,6 +25,7 @@ module SpreeShipstation
 
       Spree::LineItem.class_eval do
         include Spree::LineItem::ShipstationParams
+        include Spree::LineItem::ShipstationExport
       end
 
       Spree::Order.class_eval do
@@ -42,10 +43,12 @@ module SpreeShipstation
 
       Spree::Shipment.class_eval do
         include Spree::Shipment::ShipstationParams
+        include Spree::Shipment::ShipstationExport
       end
 
       Spree::Variant.class_eval do
         include Spree::Variant::ShipstationParams
+        include Spree::Variant::ShipstationExport
       end
     end
 
