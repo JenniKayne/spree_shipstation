@@ -48,7 +48,7 @@ module Spree
       end
 
       def shipstation_params_items
-        line_items.map(&:shipstation_params)
+        line_items.select(&:shipstation_valid?).map(&:shipstation_params)
       end
 
       def shipstation_params_notes
@@ -68,7 +68,7 @@ module Spree
       end
 
       def shipstation_params_shipment
-        shipment = shipments.first
+        shipment = shipments.find(&:shipstation_valid?)
         shipment ? shipment.shipstation_params : {}
       end
 
