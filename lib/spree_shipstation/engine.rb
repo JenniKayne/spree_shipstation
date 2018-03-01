@@ -25,7 +25,6 @@ module SpreeShipstation
 
       Spree::LineItem.class_eval do
         include Spree::LineItem::ShipstationParams
-        include Spree::LineItem::ShipstationExport
       end
 
       Spree::Order.class_eval do
