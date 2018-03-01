@@ -20,7 +20,6 @@ module Spree
 
       def shipstation_params_weight
         inventory_units.
-          select { |unit| unit.variant.shipstation_valid? }.
           map { |unit| unit.variant.weight.to_f * unit.quantity }.
           sum
       end

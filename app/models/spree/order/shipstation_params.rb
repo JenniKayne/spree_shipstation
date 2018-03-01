@@ -48,7 +48,7 @@ module Spree
       end
 
       def shipstation_params_items
-        line_items.select(&:shipstation_valid?).map(&:shipstation_params)
+        line_items.map(&:shipstation_params)
       end
 
       def shipstation_params_notes
