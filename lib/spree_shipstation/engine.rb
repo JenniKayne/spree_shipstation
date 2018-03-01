@@ -32,9 +32,9 @@ module SpreeShipstation
         include Spree::Order::ShipstationParams
         include Spree::Order::ShipstationExport
 
-        state_machine do
-          after_transition to: :complete, do: :schedule_shipstation_export
-        end
+        # state_machine do
+        #   after_transition to: :complete, do: :schedule_shipstation_export
+        # end
 
         def schedule_shipstation_export
           SpreeShipstation::ExportOrderJob.perform_later(self)
