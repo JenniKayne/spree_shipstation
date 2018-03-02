@@ -66,6 +66,7 @@ module Spree
       order = Spree::Order.find_by_number(order.number)
       order.shipments.ready.each do |shipment|
         begin
+          shipment.reload
           next if shipment.shipped?
           shipment.ready! if shipment.can_ready?
           shipment.update_attribute(:tracking, tracking_number)
