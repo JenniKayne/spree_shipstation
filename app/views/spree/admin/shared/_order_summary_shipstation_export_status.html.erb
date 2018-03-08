@@ -1,0 +1,17 @@
+
+<% if @order.shipstation_exported_at? %>
+  <tr>
+    <td><strong><%= Spree.t(:shipstation_exported_at) %></strong></td>
+    <td><%= @order.shipstation_exported_at.strftime('%Y-%m-%d %l:%M %p') %></td>
+  </tr>
+<% else %>
+  <tr>
+    <td><strong><%= Spree.t(:shipstation) %></strong></td>
+    <td>
+      <%= form_for @order, url: spree.admin_shipstation_export_path(@order) do |f| %>
+        <% button_params = @order.shipstation_valid? ? {} : { disabled: :disabled } %>
+        <%= button Spree.t('export'), 'save', {}, button_params %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>

@@ -2,9 +2,14 @@ class Spree::ShipstationManager
   ALLOWED_ACTIONS = %i[export_orders export_order].freeze
 
   def initialize(action, params = {})
-    return unless ALLOWED_ACTIONS.include?(action)
+    @success = false
     @verbose = params[:verbose] == true
+    return unless ALLOWED_ACTIONS.include?(action)
     send(action, params)
+  end
+
+  def success?
+    @success
   end
 
   private
@@ -12,19 +17,22 @@ class Spree::ShipstationManager
   def export_order(params = {})
     order = params[:order]
     puts "Spree::ShipstationManager export order #{order.number}" if @verbose
-
     if order.shipstation_valid?
       response = Shipstation::Order.create order.shipstation_params
       export_order_validate_response(order, response)
       order.shipstation_exported!
       puts '> Exported' if @verbose
-      response
+      @success = true
     elsif @verbose
       puts '> Order not suitable for shipstation'
     end
   rescue StandardError => e
-    message = prepare_error_message("Error::Shipstation.export_order #{e.message}", order)
-    ExceptionNotifier.notify_exception(e, data: { msg: message })
+    if params[:disable_error_handling]
+      raise e
+    else
+      message = prepare_error_message("Error::Shipstation.export_order #{e.message}", order)
+      ExceptionNotifier.notify_exception(e, data: { msg: message })
+    end
   end
 
   def export_order_validate_response(order, response)
@@ -45,6 +53,7 @@ class Spree::ShipstationManager
         next
       end
     end
+    @success = true
   end
 
   def prepare_error_message(message, order)
