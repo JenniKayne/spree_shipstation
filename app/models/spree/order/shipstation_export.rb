@@ -6,7 +6,10 @@ module Spree
       end
 
       def shipstation_valid?
-        shipments.any?(&:shipstation_valid?)
+        valid_payments = payments.select { |payment| %w[completed pending processing].include?(payment.state) }
+        valid_payments.any? &&
+          valid_payments.sum(&:amount) == total &&
+          shipments.any?(&:shipstation_valid?)
       end
     end
   end
