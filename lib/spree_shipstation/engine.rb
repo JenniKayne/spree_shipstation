@@ -31,6 +31,8 @@ module SpreeShipstation
         include Spree::Order::ShipstationParams
         include Spree::Order::ShipstationExport
 
+        whitelisted_ransackable_attributes << 'shipstation_exported_at' unless whitelisted_ransackable_attributes.include?('shipstation_exported_at')
+
         # state_machine do
         #   after_transition to: :complete, do: :schedule_shipstation_export
         # end
